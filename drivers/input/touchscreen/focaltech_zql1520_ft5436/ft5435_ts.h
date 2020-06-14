@@ -4,6 +4,7 @@
  *
  * Copyright (c) 2010  Focal tech Ltd.
  * Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2017 XiaoMi, Inc.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -24,25 +25,22 @@
 #define FT6X06_ID		0x06
 #define FT6X36_ID       0x36
 /* [PLATFORM]-Mod-BEGIN by TCTNB.YQJ, FR797197, 2014/11/28 add for tp gesture  */
-//#define FOCALTECH_PWRON_UPGRADE
-//#define SET_COVER_MODE 
-#define FOCALTECH_AUTO_UPGRADE		1//Match the different vendors
-#define FOCALTECH_LOCK_DOWN_INFO	0	//get Mi 's lock down info
-//#define FOCALTECH_TP_GESTURE
+
+#define SET_COVER_MODE
+#ifdef CONFIG_MACH_XIAOMI_TISSOT
+#define FOCALTECH_AUTO_UPGRADE	0
+#else
+#define FOCALTECH_AUTO_UPGRADE	0
+#endif
+#define FOCALTECH_LOCK_DOWN_INFO	0
+#define FOCALTECH_TP_GESTURE		0
 #define FOCALTECH_FAE_MOD
-//#define CONFIG_TOUCHPANEL_PROXIMITY_SENSOR
-//#define USB_CHARGE_DETECT
-#define FOCALTECH_ITO_TEST			0	//TP rawdata Test
-#define FOCALTECH_MAX_VKEY_NUM 3
-//#define LEATHER_COVER
-/*[FEATURE]-Modified-BEGIN by TCTSH.xingchen.wang for task 1238223, 2015/12/25, add vr funtion*/
-//#define VR_GLASS
-/*[FEATURE]-Modified-END by TCTSH.xingchen.wang for task 1238223, 2015/12/25*/
-/* [PLATFORM]-Mod-END by TCTNB.YQJ*/
-//[PLATFORM] Add by wangxingchen 12/22/2014 PR.874996 Idol 3 5.5 TP Glove Function Development.
-//#define FOCALTECH_TP_GLOVE
-//[PLATFORM] Add by wangxingchen 12/22/2014 PR.874996 end.
-//#include <linux/sensors.h>
+#define FOCALTECH_TP_GLOVE		0
+
+#define USB_CHARGE_DETECT		1
+#define FOCALTECH_ITO_TEST		1
+#define FOCALTECH_MAX_VKEY_NUM	3
+
 struct fw_upgrade_info {
 	bool auto_cal;
 	u16 delay_aa;
@@ -89,7 +87,6 @@ struct ft5435_ts_platform_data {
 	int num_virkey;
 	struct virkey vkeys[FOCALTECH_MAX_VKEY_NUM];
 };
-/*[FEATURE]-Modified-BEGIN by TCTSH.xingchen.wang for task 1208391, 2016/01/06, new rawdata interface*/
 struct ft5435_rawdata_test_result {
 	int result;
 	int min_limited_value;
@@ -98,5 +95,4 @@ struct ft5435_rawdata_test_result {
 	int max_value;
 	int index[350][3];
 };
-/*[FEATURE]-Modified-END by TCTSH.xingchen.wang for task 1208391, 2016/01/06*/
 #endif
