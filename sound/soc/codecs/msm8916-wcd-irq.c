@@ -210,9 +210,14 @@ static int get_irq_bit(int linux_irq)
 	return i;
 }
 
+static int get_order_irq(int  i)
+{
+	return order[i];
+}
+
 static irqreturn_t wcd9xxx_spmi_irq_handler(int linux_irq, void *data)
 {
-	int irq, i;
+	int irq, i, j;
 	unsigned long status[NUM_IRQ_REGS] = {0};
 
 	if (unlikely(wcd9xxx_spmi_lock_sleep() == false)) {
@@ -232,7 +237,16 @@ static irqreturn_t wcd9xxx_spmi_irq_handler(int linux_irq, void *data)
 		status[i] &= ~map.mask[i];
 	}
 
-	map.handler[irq](irq, data);
+	for (i = 0; i < MAX_NUM_IRQS; i++) {
+		j = get_order_irq(i);
+		if ((status[BIT_BYTE(j)] & BYTE_BIT_MASK(j)) &&
+			((map.handled[BIT_BYTE(j)] &
+			BYTE_BIT_MASK(j)) == 0)) {
+			map.handler[j](irq, data);
+			map.handled[BIT_BYTE(j)] |=
+					BYTE_BIT_MASK(j);
+		}
+	}
 	map.handled[BIT_BYTE(irq)] &= ~BYTE_BIT_MASK(irq);
 	wcd9xxx_spmi_unlock_sleep();
 
