@@ -324,7 +324,12 @@ dtb-$(CONFIG_ARCH_MSM8909) += msm8909-pm8916-mtp.dtb \
 	apq8009-dragon.dtb
 
 ifeq ($(CONFIG_ARM64),y)
-always          := $(dtb-y)
+ifneq ($(CONFIG_MACH_NONTREBLE_DTS),y)
+always          := msm8937-pmi8937-qrd-sku2-holland1.dtb
+else
+always          := msm8937-pmi8937-qrd-sku2-holland1-nontreble.dtb
+endif
+
 subdir-y        := $(dts-dirs)
 else
 targets += dtbs
