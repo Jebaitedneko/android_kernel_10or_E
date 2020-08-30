@@ -9,9 +9,10 @@
 #
 # Normal rules
 #
-build*.sh
-out/
 modules/
+out/
+anykernel/anykernel3/
+anykernel/pronto_wlan/
 .*
 *.o
 *.o.*
